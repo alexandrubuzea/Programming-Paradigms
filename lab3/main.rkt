@@ -31,6 +31,8 @@
     )
   )
 
+; (define add2 (my-add 2))
+
 ; Currying-ul se mai numeste si aplicare partiala, si este foarte util in momentul in care ne dorim reutilizare de cod.
 ; In Racket, functiile sunt uncurried by default (nu accepta aplicare partiala).
 ; Mare atentie la aplicarea functiilor curried ! Dupa pasarea primului parametru, return type-ul este o functie, de aceea
@@ -113,3 +115,7 @@
   )
 
 (transpose '((1 2) (3 4)))
+
+(define (apply-on-all funcs elems)
+  (foldr append '() (map (λ(f) (map f elems)) funcs))
+  )
