@@ -51,7 +51,7 @@ c
 
 (define clojure-ones (λ() (cons 1 clojure-ones)))
 
-(clojure-take clojure-ones 50)
+(clojure-take clojure-ones 5)
 
 ; 2. Folosind promisiuni
 (define (delay-take s n)
@@ -140,4 +140,7 @@ c
 
 (define primes (sieve (stream-rest (stream-rest naturals-3))))
 
-(stream-take primes 20)
+(stream-take primes 100)
+
+(define fibo (stream-cons 0 (stream-cons 1 (stream-zip-with + fibo (stream-rest fibo)))))
+(stream-take fibo 20)
