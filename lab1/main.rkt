@@ -26,7 +26,7 @@
 ; (3)
 
 ; Q1: Va da eroare apelul de mai jos ?
-(define a 4)
+; (define a 4)
 
 ; Racket este un limbaj tipat dinamic. Ce inseamna asta ? Pai, inseamna ca tipurile de date se determina
 ; la runtime, nu la momentul compilarii (nu sunt cunoscute la rulare). Ce implicatii are asta? Pai, sa vedem ...
@@ -66,5 +66,3 @@ list1
 ; Solutie: marcam asta cu un ' inaintea parantezei deschise.
 
 (define ex-list '((f 1) 2 #t))
-
-

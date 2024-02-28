@@ -144,3 +144,23 @@ c
 
 (define fibo (stream-cons 0 (stream-cons 1 (stream-zip-with + fibo (stream-rest fibo)))))
 (stream-take fibo 20)
+
+; D. parcurgeri lazy pe grafuri sau arbori (spatiul starilor)
+
+; Sa presupunem ca avem sirul de reguli de productie (gramatica): S -> aS | bS | eps
+
+(define list->stream (lambda(l) (if (null? l) empty-stream (stream-cons (car l) (list->stream (cdr l))))))
+
+(define (gen-succs str)
+  (if (string-contains? str "S") (list->stream (list (string-replace str "S" "aS") (string-replace str "S" "bS") (string-replace str "S" ""))) empty-stream)
+)
+
+(define derivations
+  (let search ([queue (stream-cons "S" empty-stream)] [result empty-stream])
+    (let* ([hd (stream-first queue)] [next (gen-succs hd)])
+        (stream-cons hd (search (stream-append (stream-rest queue) next) (stream-cons hd result)))
+    )
+  )
+)
+
+(define strs (stream-filter (λ(str) (not (string-contains? str "S" ))) derivations))

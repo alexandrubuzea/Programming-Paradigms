@@ -4,7 +4,7 @@
 ; ce inseamna asta ? Functiile se comporta ca orice altceva (variabile/simboluri, instructiuni etc)
 
 ; Exemplu 1
-(define function-list '(even? odd? (lambda(x) (+ x (* x x))) cons append))
+(define function-list (list even? odd? (lambda(x) (+ x (* x x))) cons append))
 
 ; Ce presupune efectiv asta ? Ele pot fi pasate altor functii sau pot fi returnate din functii !
 ; Astfel, putem defini functii care lucreaza cu alte functii, numite functionale (functii de ordin superior)
@@ -24,12 +24,12 @@
 ; restul parametrilor
 ; Un astfel de procedeu -> se numeste currying
 (define my-add
-  (lambda(x)
-    (lambda(y)
-      (+ x y)
-      )
+	(lambda(x)
+    	(lambda(y)
+      		(+ x y)
+      	)
     )
-  )
+)
 
 ; (define add2 (my-add 2))
 
@@ -115,7 +115,3 @@
   )
 
 (transpose '((1 2) (3 4)))
-
-(define (apply-on-all funcs elems)
-  (foldr append '() (map (λ(f) (map f elems)) funcs))
-  )
