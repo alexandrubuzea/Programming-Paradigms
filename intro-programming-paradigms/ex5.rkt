@@ -1,5 +1,8 @@
 #lang racket
 
+'(+ 1 2)
+(list (+ 1 2))
+
 (define (generate-even n)
     (if (= n 0)
         '()

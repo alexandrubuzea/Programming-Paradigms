@@ -1,75 +1,31 @@
--- Racket -> strongly typed si dynamically typed
--- Haskell -> strongly typed si statically typed
-f :: Integer -> Integer -> Integer
-f x y = x + y
+import Control.Arrow (ArrowChoice(right))
+-- sumList 
 
--- f1 = \x y -> x + y
--- f2 = \x -> \y -> x + y
--- f3 = (+ x) y
--- f4 = (+ y) x
--- f5 = (+)
+sumList :: [Integer] -> Integer
+sumList l = if null l then 0 else head l + sumList (tail l)
 
-{-
-    g = f 3 = \y -> 3 + y 
--}
+sumList2 :: [Integer] -> Integer
+sumList2 l
+    | null l = 0
+    | otherwise = head l + sumList2 (tail l)
 
-{-
-    lambda(x y) (+ x y)
-    lambda(x) (lambda (y) (+ x y))
--}
-
--- Int, Integer, Bool, Char, String = [Char]
-
--- []
-
-h x y z = (x == y) && z
-
--- Racket -> evaluare aplicativa
--- Haskell -> evaluare lenesa
-
-{-
-    -> operatori -> in Haskell, in forma infixata
-    -> functii -> in forma prefixata
--}
-
--- f x y = inc x + y
-
--- _ + _
-
--- pentru liste: [], :
-
-my_length1 :: Eq a => [a] -> Integer
-my_length1 l = if l == [] then 0 else 1 + my_length1 (tail l)
-
-my_length2 :: Eq a => [a] -> Integer
-my_length2 l = case l == [] of
+sumList3 :: [Integer] -> Integer
+sumList3 l = case null l of
     True -> 0
-    _ -> 1 + my_length2 (tail l)
+    False -> head l + sumList3 (tail l)
 
-my_length3 :: Eq a => [a] -> Integer
-my_length3 l
-    | l == [] = 0
-    | otherwise = 1 + my_length3 (tail l)
+sumList4 :: [Integer] -> Integer
+sumList4 [] = 0
+sumList4 (x:xs) = x + sumList4 xs
 
--- [] sau x:xs
-my_length4 :: [a] -> Integer
-my_length4 [] = 0
-my_length4 (_:xs) = 1 + my_length4 xs
-
-a = let
-        b = 3
-        c = 2
-    in
-        b + c
-
-a2 = b + c
-    where
-        b = 3
-        c = 2
+sumList5 :: [Integer] -> Integer
+sumList5 = foldr (+) 0
 
 qsort :: [Integer] -> [Integer]
 qsort [] = []
 qsort (x:xs) = qsort left ++ [x] ++ qsort right
     where
         left = filter (< x) xs
-        right = filter (>= x) xs 
+        right = filter (>= x) xs
+
+data List a = Nil | Cons a (List a)

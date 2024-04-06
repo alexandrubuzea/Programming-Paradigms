@@ -24,7 +24,7 @@
 ; restul parametrilor
 ; Un astfel de procedeu -> se numeste currying
 (define my-add
-	(lambda(x)
+    (lambda(x)
     	(lambda(y)
       		(+ x y)
       	)
@@ -51,7 +51,8 @@
 ; functiei curried
 (define uncurried-add
   (lambda (x y) ((my-add x) y))
-  )
+)
+
 (uncurried-add 5 5)
 
 ; Functionalele tipice in programarea functionala sunt map, filter, fold

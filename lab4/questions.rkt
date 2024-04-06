@@ -31,3 +31,6 @@
 ;         (+ x y)
 ;     )
 ; )
+
+(define (f x y) (define z 20) (+ x y z))
+z

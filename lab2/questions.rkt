@@ -18,7 +18,7 @@
 
 ; Variante:
 ; (a) f este recursivă pe coadă pentru că nu mai realizează alte
-; operatii după aplicat , ia recursivă.
+; operatii după aplicatia recursivă.
 ; (b) f este recursivă pe coadă pentru că nu mai realizează alte
 ; operatii după aplicatia recursivă si pentru că foloseste un acu-
 ; mulator (fără acumulator nu am avea recursivitate pe coadă).

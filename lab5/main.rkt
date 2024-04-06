@@ -47,7 +47,7 @@ c
   (if (= n 0) null
       (cons (car (s)) (clojure-take (cdr (s)) (- n 1)))
   )
-  )
+)
 
 (define clojure-ones (λ() (cons 1 clojure-ones)))
 

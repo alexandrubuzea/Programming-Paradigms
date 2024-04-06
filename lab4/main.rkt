@@ -108,7 +108,7 @@
 (define c 10)
 (define f (λ(x) (+ x c)))
 
-; aici expresia va fi evaluata la 10, intrucat functia va folosi valoarea lui c din momentul definirii ei
+; aici expresia va fi evaluata la 20, intrucat functia va folosi valoarea lui c din momentul definirii ei
 ; aka c = 10, nu c = 20 din contextul folosirii functiei
 (let ([c 20]) (f 10))
 
@@ -124,3 +124,4 @@
 (let ([map filter] [filter map])
   ((compose (curry map odd?) (curry filter (λ(x) (+ x (quotient x 2))))) '(1 2 3))
   )
+(let* ([c 20]) (f 10))
