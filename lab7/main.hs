@@ -16,5 +16,5 @@ l4 = iterate (+ 2) 5 -- un stream al aplicatiilor succesive ale functiei (+2)
                      -- pe valoarea 5, adica [5, 7, 9, 11 ...]
 
 -- 4. Sablon map-reduce (concatMap)
-alphabet = ['a', 'b']
-result = "" ++ concatMap (\x -> map (:x) alphabet) result
+alphabet = "ab"
+result = "" : concatMap (\x -> map ((x ++) . (:[])) alphabet) result
