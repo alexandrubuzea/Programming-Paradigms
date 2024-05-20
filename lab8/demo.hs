@@ -38,6 +38,9 @@ data Student = Student {
     name :: String,
     age :: Integer,
     failedExams :: Integer
+} | St {
+    surname :: String,
+    firstname :: String
 } deriving Show
 
 
