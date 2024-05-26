@@ -51,7 +51,8 @@ neighbour([X1, X2, X3, X4, X5, X6, X7, X8, e], [X1, X2, X3, X4, X5, X6, X7, e, X
 neighbour([X1, X2, X3, X4, X5, X6, X7, X8, e], [X1, X2, X3, X4, X5, e, X7, X8, X6]).
 
 % prerequisites - an example of an initial state
-initial_state([6, 4, 7, 8, 5, 2, 1, 3, e]).
+% initial_state([6, 4, 7, 8, 5, 2, 1, 3, e]).
+initial_state([8, 5, 2, 7, 1, 4, 6, 3, e]).
 
 position_value(Index, Row, Column) :- Row is div(Index, 3), Column is mod(Index, 3).
 
@@ -74,23 +75,24 @@ heuristic(State, Value) :- final_state(Final), findall(Cost,
 
 % run the A* algorithm with the initial state
 
-astar() :- initial_state(State),
+astar(Path) :- initial_state(State),
            heuristic(State, H),
            astar_search([State/H], [State/none/0], States),
            final_state(Final),
            get_path(State, Final, States, Path),
+           !,
            write(Path).
 
 astar_search([], _, _) :- !, fail.
 
-astar_search([Final|_], Discovered, States) :- final_state(Final), !, States = Discovered.
+astar_search(PQ, Discovered, States) :- extract_state(PQ, Next, _), final_state(Next), !, States = Discovered.
 
 astar_search(PQ, Discovered, States) :-
         extract_state(PQ, Next, Visited),
         expand_state(Next, Neighbours),
         member(Next/_/Distance, Discovered),
         update_discovered(Neighbours, Visited, Discovered, Next, Distance, NewVisited, NewDiscovered),
-        write(NewVisited),
+        % write(NewVisited),
         astar_search(NewVisited, NewDiscovered, States).
 
 % extract_state(+PQ, -Next, -Visited).
@@ -102,20 +104,23 @@ extract_state(PQ, Next, Visited) :- findall(Candidate,
                                     findall(Pair, (member(Pair, PQ), Pair \= Next/_), Visited).
 
 
-update_discovered([], Visited, Discovered, _, _, Visited, Discovered).
+update_discovered([], Visited, Discovered, _, _, Visited, Discovered) :- !.
 update_discovered([N|Ns], Visited, Discovered, Parent, Distance, NewVisited, NewDiscovered)
-    :- (\+ member(N/_, Visited), \+ member(N/_/_, Discovered), !,
-        heuristic(N, H), Value is H + Distance + 1, NewDistance is Distance + 1,
-        update_discovered(Ns, [N/Value|Visited], [N/Parent/NewDistance|Discovered], Parent, Distance, NewVisited, NewDiscovered))
+    :- (\+ member(N/_/_, Discovered), !, heuristic(N, H), NewDistance is Distance + 1,
+                Value is NewDistance + H,
+            update_discovered(Ns, [N/Value|Visited], [N/Parent/NewDistance|Discovered], Parent, Distance, NewVisited, NewDiscovered))
         ;
-        (\+ member(N/_, Visited), !, NewDistance is Distance + 1,
-        member(N/_/OldDistance, Discovered), heuristic(N, H), Value is H + Distance + 1,
-            (OldDistance > NewDistance, !, nth0(_, Discovered, N/_/_, Rest),
+        (
+            member(N/_/OldDistance, Discovered), NewDistance is Distance + 1,
+            (
+                OldDistance > NewDistance, !, nth0(_, Discovered, N/_/_, Rest),
+                heuristic(N, H), Value is NewDistance + H,
                 update_discovered(Ns, [N/Value|Visited], [N/Parent/NewDistance|Rest],
                         Parent, Distance, NewVisited, NewDiscovered)
+            );
+            (
+                update_discovered(Ns, Visited, Discovered, Parent, Distance, NewVisited, NewDiscovered)
             )
-            ;
-            update_discovered(Ns, Visited, Discovered, Parent, Distance, NewVisited, NewDiscovered)
         ).
 
 expand_state(State, Neighbours) :- findall(Nei, neighbour(State, Nei), Neighbours).
