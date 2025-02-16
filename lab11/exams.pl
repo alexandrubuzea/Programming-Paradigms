@@ -5,3 +5,9 @@
     4], [1, 3, 2], [4]] , rezultatul este lista [[1, 3, 2], [4]] . Atentie! NU folositi
     recursivitate explicita, ci metapredicate !
 */
+
+findall(
+    Ys,
+    (member(Ys, Yss), (forall(member(Y, Ys), member(Y, Xs)) ; forall(member(Y, Ys), \+ member(Y, Xs)))),
+    Result
+).

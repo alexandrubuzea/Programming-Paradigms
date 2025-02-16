@@ -21,7 +21,7 @@ sumList([H|T], Sum) :- sumList(T, Prev), Sum is Prev + H.
 partition(L) :- helper(L, [], []).
 
 helper([], L1, L2) :- sumList(L1, S1), sumList(L2, S2), S1 =:= S2, write(L1), write(L2).
-helper([H|T], L1, L2) :- helper(T, [H|L1], L2) ; helper(T, L1, [H|L2]).
+helper([H|T], L1, L2) :- helper(T, [H|L1], L2), !; helper(T, L1, [H|L2]).
 
 nod(a).
 nod(b).
@@ -31,7 +31,7 @@ nod(e).
 nod(f).
 nod(g).
 
-arc(a/b).
+arc(a/b). % arc(a, b).
 arc(b/c).
 arc(a/c).
 arc(a/g).
@@ -48,7 +48,7 @@ color(c1).
 color(c2).
 color(c3).
 
-run_coloring(Solution) :- coloring([], Acc), Solution = Acc.
+run_coloring(Solution) :- coloring([], Acc), !, Solution = Acc.
 
 coloring(Solution, Acc) :- forall(nod(Node), member(Node/_, Solution)), !, Acc = Solution.
 

@@ -21,24 +21,25 @@ om(ciprian).
 om(mihnea).
 om(andreea).
 
+% pentru oricare X . filosof(X) -> om(X)
 om(X) :- filosof(X).
 
 filosof(george).
 
 % filosof(X) :- ...
 
-% pair(X, Y)
-
+% pair(X, Y) -> similar to a structure in another languages (groups multiple symbols)
 valid_pair(pair(X, Y)) :- X = 0, Y = 0.
 
 % append(L1, L2, Result)
 
 % custom_length(+List, ?Length)
 custom_length([], 0).
-custom_length([_|T], Len) :- custom_length(T, PrevLen), Len = PrevLen + 1.
-
+custom_length([_|T], Len) :- custom_length(T, PrevLen), Len is PrevLen + 1.
 % custom_length(L, Len) :- (L == [], Len = 0) ; (L = [_ | T], custom_length(T, Prev), Len is Prev + 1).
 
 % state([x, 0, x, e, e, e, e, e, e], 0)
 app([], L, L).
 app([H|T], R, [H|M]) :- app(T, R, M).
+
+friend(X, Y) :- friend(Y, X).

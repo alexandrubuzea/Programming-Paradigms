@@ -48,7 +48,7 @@ min(X, Y, Min) :- X =< Y, Min = X.
 % Ne deranjeaza faptul ca avem cod redundant (X > Y si X =< Y).
 % Cum remediem asta ? Este corect predicatul urmator ?
 
-min2(X, Y, Min) :- X > Y, Min = Y.
+min2(X, Y, Min) :- X > Y, !, Min = Y.
 min2(X, _, Min) :- Min = X.
 
 % Cum putem optimiza cu cut ? Astfel:
