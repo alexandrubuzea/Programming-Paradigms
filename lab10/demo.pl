@@ -11,6 +11,8 @@
     8. Arithmetic operators in Prolog (+, -, /, *), functions (mod)
     9. Unification (X + Y = 1 + 2)
     10. Equality (and not equality) in Prolog (=, ==, is, =:=, \=, \==, =\=)
+
+    ++ side detail: closed world assumption
 */
 
 % om(x) = "x este om"
@@ -19,27 +21,26 @@ om(andrei).
 om(alexandru).
 om(ciprian).
 om(mihnea).
+
 om(andreea).
+om(alina).
 
-% pentru oricare X . filosof(X) -> om(X)
-om(X) :- filosof(X).
+parent(andrei, mihai).
+parent(ciprian, mihnea).
+parent(mihai, ciprian).
 
-filosof(george).
+grandparent(andreea, alina).
 
-% filosof(X) :- ...
+% parent(X, Y) ^ parent(Y, Z) -> grandparent(X, Z)
+grandparent(X, Z) :- parent(X, Y), parent(Y, Z).
 
-% pair(X, Y) -> similar to a structure in another languages (groups multiple symbols)
-valid_pair(pair(X, Y)) :- X = 0, Y = 0.
+min(X, Y, Min) :- X > Y, Min = Y.
+min(X, _, Min) :- Min = X. % wrong -> it should be min(X, _, Min) :- X <= Y, Min = X.
 
-% append(L1, L2, Result)
+% len(L, Len)
+len([], 0).
+len([_|T], Len) :- len(T, PrevLen), Len is PrevLen + 1.
 
-% custom_length(+List, ?Length)
-custom_length([], 0).
-custom_length([_|T], Len) :- custom_length(T, PrevLen), Len is PrevLen + 1.
-% custom_length(L, Len) :- (L == [], Len = 0) ; (L = [_ | T], custom_length(T, Prev), Len is Prev + 1).
+% exemplu de termen - "structura" din Prolog
+is_pair(pair(_, _)).
 
-% state([x, 0, x, e, e, e, e, e, e], 0)
-app([], L, L).
-app([H|T], R, [H|M]) :- app(T, R, M).
-
-friend(X, Y) :- friend(Y, X).
