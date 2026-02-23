@@ -1,13 +1,9 @@
 #lang racket
 
-(require 2htdp/image)
-
 ; Racket = limbaj preponderent functional (are niste constructii iterative, pe care insa noi nu le vom studia)
 ; avem aici o variabila definita => are statut de variabila globala
 
 (define a 5)
-
-(define b (* 2 a))
 
 ; definim si o functie: functia care primeste un numar n si returneaza n + 2
 

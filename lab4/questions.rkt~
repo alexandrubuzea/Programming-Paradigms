@@ -16,14 +16,10 @@
 ; Ce se afiseaza la executia urmatorului cod ?
 
 (define L '(1 2 3))
-(define x (cdr L)) ; '(2 3)
-(define y (cddr L)) ; '(3)
-(define z (cdddr L)) ; '()
+(define x (cdr L))
+(define y (cddr L))
+(define z (cdddr L))
 (let* ([x y] [y z] [z x]) (list x y z))
-; x '(3)
-; y '()
-; z '(3)
-; '((3) () (3))
 
 ; Q8 2017
 
@@ -36,5 +32,5 @@
 ;     )
 ; )
 
-(let* [(a 5) (a 10)] a)
-; ((λ(a) (λ(a) a) 5) 10)
+(define (f x y) (define z 20) (+ x y z))
+z

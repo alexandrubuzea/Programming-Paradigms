@@ -51,8 +51,7 @@ neighbour([X1, X2, X3, X4, X5, X6, X7, X8, e], [X1, X2, X3, X4, X5, X6, X7, e, X
 neighbour([X1, X2, X3, X4, X5, X6, X7, X8, e], [X1, X2, X3, X4, X5, e, X7, X8, X6]).
 
 % prerequisites - an example of an initial state
-% initial_state([6, 4, 7, 8, 5, 2, 1, 3, e]).
-initial_state([8, 5, 2, 7, 1, 4, 6, 3, e]).
+initial_state([2, e, 3, 1, 5, 6, 4, 7, 8]).
 
 position_value(Index, Row, Column) :- Row is div(Index, 3), Column is mod(Index, 3).
 
@@ -62,22 +61,26 @@ manhattan(Row1, Col1, Row2, Col2, Value) :- DR is abs(Row2 - Row1), DC is abs(Co
 sumList([], 0).
 sumList([H|T], Sum) :- sumList(T, Prev), Sum is Prev + H.
 
-heuristic(State, Value) :- final_state(Final), findall(Cost,
-                            (
-                                member(F, Final),
-                                nth0(FIndex, Final, F),
-                                nth0(Index, State, F),
-                                position_value(FIndex, Row1, Col1),
-                                position_value(Index, Row2, Col2),
-                                manhattan(Row1, Col1, Row2, Col2, Cost)
-                            )
-                            , Costs), sumList(Costs, Value).
+% heuristic(State, Value) :- final_state(Final), findall(Cost,
+%                             (
+%                                 member(F, Final),
+%                                 nth0(FIndex, Final, F),
+%                                 nth0(Index, State, F),
+%                                 position_value(FIndex, Row1, Col1),
+%                                 position_value(Index, Row2, Col2),
+%                                 manhattan(Row1, Col1, Row2, Col2, Cost)
+%                             )
+%                             , Costs), sumList(Costs, Value).
+
+heuristic(_, 0).
 
 % run the A* algorithm with the initial state
 
 astar(Path) :- initial_state(State),
            heuristic(State, H),
            astar_search([State/H], [State/none/0], States),
+           length(States, LenStates),
+           write(LenStates),
            final_state(Final),
            get_path(State, Final, States, Path),
            !,
@@ -92,7 +95,6 @@ astar_search(PQ, Discovered, States) :-
         expand_state(Next, Neighbours),
         member(Next/_/Distance, Discovered),
         update_discovered(Neighbours, Visited, Discovered, Next, Distance, NewVisited, NewDiscovered),
-        % write(NewVisited),
         astar_search(NewVisited, NewDiscovered, States).
 
 % extract_state(+PQ, -Next, -Visited).

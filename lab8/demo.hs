@@ -1,3 +1,5 @@
+import GHC.Read (list)
+import Language.Haskell.TH (safe)
 {-
     TODO: live demo
 
@@ -12,63 +14,59 @@
     Extra 2: classes (lab9)
 -}
 
+-- (a -> b) -> [a] -> [b]
+
 type Point = (Double, Double)
 
-c :: Point
-c = (0, 1)
+reflect :: Point -> (Double, Double)
+reflect (x, y) = (x, -y)
 
-
-d :: (Double, Double)
-d = (0, 1)
-
-type Pointed a = Point -> a
-
-data List a = Nil | Cons a (List a)
-
-toList :: List a -> [a]
-toList Nil = []
-toList (Cons x l) = x : toList l
-
-member :: Eq a => List a -> a -> List a
-member Nil _ = Nil
-member ll@(Cons x l) e = if x == e then ll else member l e
-
--- data Student = Student String Integer Integer
-data Student = Student {
-    name :: String,
+data Being = P {
     age :: Integer,
-    failedExams :: Integer
-} | St {
-    surname :: String,
-    firstname :: String
-} deriving Show
+    name :: String,
+    cnp :: String
+} | Animal {
+    animalAge :: Integer
+}
 
+-- data Color = Red | Blue | Yellow | Green | ... 
 
-data NestedList a = Atom a | List [NestedList a]
-flatten :: NestedList a -> [a]
-flatten (Atom a) = [a]
-flatten (List l) = concatMap flatten l
+processBeing :: Being -> Integer
+processBeing (P age name cnp) = age
+-- processBeing (Animal age name rn) = age
 
-data Tree a = Void | Node a (Tree a) (Tree a)
+-- data NestedList a = Atom a | List [NestedList a]
 
-data Expr = Number Integer
-    | Plus Expr Expr
-    | Minus Expr Expr
-    | Mult Expr Expr
-    | Div Expr Expr
+data Tree a = EmptyTree | Node (Tree a) a (Tree a)
 
--- newtype -> accepta un singur data constructor, si un singur atribut
+-- data Tree a = Atom a | Node (Tree a) (Tree a)
 
--- data Maybe a = Nothing | Just a
+data Natural = Zero | Succ Natural
+-- Zero, Succ Zero, Succ $ Succ Zero ...
 
-maybeDiv :: Integer -> Integer -> Maybe Integer
-maybeDiv x y
-    | y == 0 = Nothing
-    | otherwise = Just $ x `quot` y
+-- data List = Nil | Cons Integer List
 
-unwrap :: Maybe Integer -> Integer
-unwrap m = case m of
-    Just x -> x
-    _ -> 0
+data List a = EmptyList | Cons a (List a)
+
+listLength :: List a -> Integer
+listLength EmptyList = 0
+listLength (Cons _ rest) = 1 + listLength rest
+
+newtype Celsius = MakeCelsius Float
+
+safeHead :: [a] -> Maybe a
+safeHead (x : _) = Just x
+safeHead [] = Nothing
 
 -- data Either a b = Left a | Right b
+
+type Error = String
+
+f :: Either Integer String -> Either String String
+f (Left i) = Left $ show i
+f r@(Right error) = Right error
+
+-- func :: GHC.Types.Any -> [GHC.Types.Any] -> [GHC.Types.Any]
+-- func = filter . (/=)
+
+data T f a = T (f a -> f a)

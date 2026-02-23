@@ -23,9 +23,6 @@
 ; "pe rand" = si daca nu ii am acum pe toti, ii pot pasa functiei ceea ce am si mi se va returna o functie care asteapta
 ; restul parametrilor
 ; Un astfel de procedeu -> se numeste currying
-
-(define original-add (λ(x y) (+ x y))) ; (define (original-add x y) (+ x y))
-
 (define my-add
     (lambda(x)
     	(lambda(y)
@@ -49,9 +46,6 @@
 ; 2. Folosind functionala predefinita curry
 (define my-add2 (curry +))
 ((my-add2 5) 5)
-
-; x -> 2 * x + 1
-; (compose add1 (curry * 2))
 
 ; Pentru transformarea inversa (mai rar), creati un lambda/o functie care accepta toti parametrii deodata, si ii aplica asupra
 ; functiei curried

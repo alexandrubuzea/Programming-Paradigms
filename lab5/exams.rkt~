@@ -33,10 +33,6 @@
 
 (define s2 (stream-cons 'x (stream-merge naturals s2)))
 
-; s2 = x0, x1, x2, ...
-; 0 x0 1 x1 2 x2 ...
-; 'x 0 x0 1 x1 ...
-; 
 ; CA '23
 
 ; Cu ce se pot inlocui punctele din urmatoarea expresie:

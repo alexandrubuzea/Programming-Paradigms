@@ -1,5 +1,3 @@
-import GHC.Num (naturalShiftL)
-import Text.XHtml (base)
 {-
     TODO: live demo
 
@@ -15,102 +13,70 @@ import Text.XHtml (base)
 
     BONUS:  - Eq on unary functions with numerical input
             - Functor for functions
+            - Functor for Maybe, Either
             - predefined classes (Eq, Show, Num, Functor)
-            - "currying" type constructors :)
+            - "currying" type constructors :) + MAYBE intro to kinds
 -}
 
 {-
-    map :: (a -> b) -> [a] -> [b]
     map f [] = []
-    map f (x : xs) = f x : map f xs
+    map f (x:xs) = f x : map f xs
 -}
 
-{-
-    class Show a where
-        show :: a -> String
--}
-
-data Student = Student {
-    name :: [Char],
+data Student = S {
     age :: Integer,
-    cnp :: [Char]
-} deriving Show
-
--- instance Show Student where
-    -- show :: Student -> String
-
-    -- show (Student name age cnp) = "{" ++ name ++ ", " ...  
-{-
-    class Show a where
-        show :: Show a => a -> String
--}
+    name :: String
+}
 
 instance Eq Student where
-    (==) :: Student -> Student -> Bool
-    s1 == s2 = cnp s1 == cnp s2
-{-
-
-    instance Eq a => Eq [a] where
-        (==) :: Eq a => [a] -> [a] -> Bool
-        [] == [] = True
-        (x : xs) == (y : ys) = x == y && xs == ys
-        _ == _ = False
-
-    class Eq a => Ord a where
-        (>) :: ...
-        (<) :: ...
-        compare :: ...
-        ...
-    
-    class Custom a where
-        (+++) :: ...
-        gigel :: ...
--}
-
--- Show, Ord
+    S _ n1 == S _ n2 = n1 == n2
 
 {-
-    map :: (a -> b) -> [a] -> [b]
-    map f [] = []
-    map f (x : xs) = f x : map f xs
--}
+class Eq a where
+    (==) :: Eq a => a -> a -> Bool
+    x == y = not (x /= y)
+    (/=) :: Eq a => a -> a -> Bool
+    x /= y = not (x == y)
 
-customLength :: [a] -> a
-customLength = undefined
+instance Eq a => Eq [a] where
+    (==) :: [a] -> [a] -> Bool
+    [] == [] = True
+    (x : xs) == (y : ys) = x == y && xs == ys
+    _ == _ = False
 
--- :t length
+data Tree a = EmptyTree | Node (Tree a) a (Tree a)
 
-{-
-    class Functor f where
-        fmap :: Functor f => (a -> b) -> f a -> f b
--}
-
-class Container f where
-    contents :: f a -> [a]
-
-data BST a = Void | Node a (BST a) (BST a) deriving Show
-
-instance Functor BST where
-    fmap :: (a -> b) -> BST a -> BST b
-    fmap _ Void = Void
-    fmap f (Node root left right) = Node (f root) (fmap f left) (fmap f right)
-{-
-
-    a -> b = (->) a b
-
-    instance Functor ((->) t) where
-    -- fmap :: (a -> b) -> (t -> a) -> (t -> b)
-        fmap = (.)
--}
+instance Eq a => Eq (Tree a) where
+    (==) :: Tree a -> Tree a -> Bool
+    EmptyTree == EmptyTree = True
+    Node l1 root1 r1 == Node l2 root2 r2 = root1 == root2 && l1 == l2 && r1 == r2
+    _ == _ = False
 
 instance (Num a, Eq b) => Eq (a -> b) where
-    (==) :: (Num a, Eq b) => (a -> b) -> (a -> b) -> Bool
-    f == g = map f l == map g l
-        where
-            l = take 11 naturals
-            naturals = 0 : map (+1) naturals
+    f == g = f 0 == g 0
+-}
 
--- class Num a where
-    -- (+) :: a -> a -> a
-    -- (-) :: a -> a -> a
-    -- (*) :: a -> a -> a
+instance (Num a, Eq b, Enum a) => Eq (a -> b) where
+    f == g = map f [0..100] == map g [0..100]
+
+(+++) :: a -> a -> [a]
+x +++ y = [x, y]
+
+data Tree a = EmptyTree | Node (Tree a) a (Tree a) deriving Show
+
+{-
+class Functor f where
+    fmap :: Functor f => (a -> b) -> f a -> f b
+
+instance Functor Tree where
+    fmap f EmptyTree = EmptyTree
+    fmap f (Node l root r) = Node (fmap f l) (f root) (fmap f r)
+-}
+
+instance Functor Tree where
+    fmap f EmptyTree = EmptyTree
+    fmap f (Node l root r) = Node (fmap f l) (f root) (fmap f r)
+
+{-
+
+-}

@@ -26,12 +26,4 @@
     )
 )
 
-(map ((f '()) '()) (list cons append list)) ; -> '(cons append list)
-
-; f = λ(a) (λ(b) (λ(g) (g b a)))
-; f '() '() = λ(g) (g '() '())
-; '()
-; cons '() '() -> '(())
-; append '() '() -> '()
-; list '() '() -> '(() ())
-; '((()) () (() ()))
+(map ((f '()) '()) (list cons append list))

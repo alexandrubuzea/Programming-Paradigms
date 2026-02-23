@@ -1,54 +1,41 @@
 {-
     TODO: live demo about:
 
-    1. List comprehensions (cartesianProduct)
+    1. List comprehensions (cartesianProduct, cartesian product of multiple lists)
     2. Function composition and application (. vs $). Point free programming
-    3. Other useful functionals (other than those in Racket):
+    3. Other useful functionals (other than those in Racket) for generating/working
+       with infinite lists:
         - scanl, zipWith, zipWith3, concatMap (map reduce), iterate, mapAccumL
         - wannabe functionals like zip, zip3, unzip, repeat, intersperse
-    4. Evaluare lenesa && how to visualize it (:sprint). Maybe Tree example
+    4. Evaluare lenesa && how to visualize it (:sprint). Tree example
 
+    Examples to present:
+    - spot 3 [1, 2, 3, 3] = [1, 2]
     BONUS: `type` keyword (for homework)
 -}
 
+-- cartesianProduct [[1, 2], [3], [4, 5]] -> 
+cartesianProduct :: [[a]] -> [[a]]
+cartesianProduct [] = [[]]
+cartesianProduct (x : xs) = [e : l | e <- x, l <- cartesianProduct xs]
 
+approximations = iterate (\x -> 0.5 * (x + 2 / x)) 2
 
+pairs = zip approximations (tail approximations)
+res = head $ [x | (x, y) <- pairs, abs (x - y) < 1e-10]
 
+{-
+length [] = 0
+length (_:xs) = 1 + length xs
 
+map f [] = []
+map f (x : xs) = f x : map f xs
 
+length $ map (+1) [1..10]
+length $ map (+1) $ 1 : [2..10]
+length $ (+1) 1 : map (+1) [2..10]
+1 + length $ map (+1) [2..10]
 
+-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-data Tree = Nil | Node Tree Integer Tree deriving Show-- TODO for lazy evaluation
-
-search :: Tree -> Integer -> Bool
-search tree e = localSearch tree
-    where
-        localSearch :: Tree -> Bool
-        localSearch Nil = False
-        localSearch (Node left root right)
-            | e == root = True
-            | e < root = localSearch left
-            | otherwise = localSearch right
-
-
-parseTree :: [Integer] -> Tree
-parseTree [] = Nil
-parseTree (x:xs) = Node left x right
-    where
-        left = parseTree $ filter (< x) xs
-        right = parseTree $ filter (> x) xs
-
--- parseTree [3, 1, 0, 2, 5, 4]
+ourSpot x = filter (x /=)

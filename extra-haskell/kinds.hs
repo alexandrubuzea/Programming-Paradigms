@@ -23,13 +23,13 @@
     kind for T defined above (receives two unary type constructors aka two * => * and a concrete
     type aka * and returns a *, which is a new type).
 
-    The kind of an expression can be checked in GHC interpreter using :k
+    The kind of an expression can be checked in GHCi interpreter using :k
 
     Exercises: i. first derive, then check the kinding for the following type expressions:
     - (->)
     - Either Int
     - Either
-    - data Fix f a = Fix (f (Fix f a)) | Base a
+    - data Fix f a = Fix (f (Fix f a)) | Base a -- wjat is the kind of Fix ? But Fix [] ?
 
     ii. Let's suppose we define a type like:
     newtype C a b = C (a -> b -> a b)
