@@ -131,7 +131,3 @@
 (define (solve-linear A b)
   'todo
   )
-
-(define (fix f) (f (fix f)))
-
-(define ones (fix (curry stream-cons 1)))
